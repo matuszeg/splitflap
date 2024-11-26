@@ -376,8 +376,16 @@ void SplitflapTask::log(const char* msg) {
 void SplitflapTask::showString(const char* str, uint8_t length, bool force_full_rotation) {
     Command command = {};
     command.command_type = CommandType::MODULES;
+
+    // char buf[200];
+    // snprintf(buf, sizeof(buf), "Displaying the string: %s", str);
+    // log(buf);
+
     for (uint8_t i = 0; i < length && i < NUM_MODULES; i++) {
         int8_t index = findFlapIndex(str[i]);
+        // snprintf(buf, sizeof(buf), "Displaying the letter: %s which has an index of: %d", str[i], index);
+        // log(buf);
+        
         if (index != -1) {
             if (force_full_rotation || index != modules[i]->GetTargetFlapIndex()) {
                 command.data.module_command[i] = QCMD_FLAP + index;

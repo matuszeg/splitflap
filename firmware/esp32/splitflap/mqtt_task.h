@@ -16,6 +16,7 @@
 #pragma once
 
 #include <Arduino.h>
+#include <json11.hpp>
 
 #include "../core/logger.h"
 #include "../core/splitflap_task.h"
@@ -23,6 +24,7 @@
 
 #include <PubSubClient.h>
 #include <WiFi.h>
+#include <ESP32Time.h>
 
 
 class MQTTTask : public Task<MQTTTask> {
@@ -40,8 +42,14 @@ class MQTTTask : public Task<MQTTTask> {
         WiFiClient wifi_client_;
         PubSubClient mqtt_client_;
         int mqtt_last_connect_time_ = 0;
+        int last_time_check = 0;
+        ESP32Time timeKeeper;
+
+        String CurrentTime = "";
 
         void connectWifi();
         void connectMQTT();
         void mqttCallback(char *topic, byte *payload, unsigned int length);
+        bool fetchTime();
+        bool handleData(json11::Json json);
 };
